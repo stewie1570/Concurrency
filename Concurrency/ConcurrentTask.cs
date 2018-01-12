@@ -7,7 +7,7 @@ namespace Concurrency
 {
     public class ConcurrentTask
     {
-        public static async Task WhenAll(List<Func<Task>> tasks, int maxConcurrency)
+        public static async Task WhenAll(IEnumerable<Func<Task>> tasks, int maxConcurrency)
         {
             IEnumerator<Func<Task>> taskEnumerator = tasks.GetEnumerator();
             await Task.WhenAll(Enumerable
@@ -24,4 +24,5 @@ namespace Concurrency
             }
         }
     }
+
 }
