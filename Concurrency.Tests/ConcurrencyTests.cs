@@ -71,15 +71,15 @@ namespace Concurrency.Tests
             var tasks = new List<Func<Task>>
             {
                 async () => await addLog(1),
-                async () => await addLog(2),
-                async () => await addLog(3),
                 async () => await addLog(4),
-                async () => await addLog(5),
                 async () => await addLog(6),
+                async () => await addLog(3),
+                async () => await addLog(5),
                 async () => await addLog(7),
-                async () => await addLog(8),
+                async () => await addLog(2),
                 async () => await addLog(9),
-                async () => await addLog(10)
+                async () => await addLog(10),
+                async () => await addLog(8)
             };
 
             //Act
@@ -115,15 +115,15 @@ namespace Concurrency.Tests
 
             var tasks = new List<Func<Task>>
             {
-                async () => await addLog(1),
-                async () => await addLog(2),
                 async () => await addLog(3),
-                async () => await addLog(4),
-                async () => await addLog(5),
-                async () => await addLog(6),
+                async () => await addLog(2),
                 async () => await addLog(7),
+                async () => await addLog(4),
+                async () => await addLog(1),
+                async () => await addLog(5),
                 async () => await addLog(8),
                 async () => await addLog(9),
+                async () => await addLog(6),
                 async () => await addLog(10)
             };
 
