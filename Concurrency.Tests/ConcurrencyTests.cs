@@ -37,7 +37,7 @@ namespace Concurrency.Tests
             };
 
             //Act
-            await Concurrency.WhenAll(tasks, maxConcurrency: 5);
+            await ConcurrentTask.WhenAll(tasks, maxConcurrency: 5);
 
             //Assert
             logs.ShouldBeEquivalentTo(new List<Log>
@@ -84,7 +84,7 @@ namespace Concurrency.Tests
 
             //Act
             int maxConcurrency = 3;
-            var whenAllComplete = Concurrency.WhenAll(tasks, maxConcurrency);
+            var whenAllComplete = ConcurrentTask.WhenAll(tasks, maxConcurrency);
             taskCompletions.ForEach(taskCompletion => taskCompletion.SetResult(0));
             await whenAllComplete;
 
@@ -129,7 +129,7 @@ namespace Concurrency.Tests
 
             //Act
             int maxConcurrency = 3;
-            var whenAllComplete = Concurrency.WhenAll(tasks, maxConcurrency);
+            var whenAllComplete = ConcurrentTask.WhenAll(tasks, maxConcurrency);
             taskCompletions.ForEach(taskCompletion => taskCompletion.SetResult(0));
             await whenAllComplete;
 

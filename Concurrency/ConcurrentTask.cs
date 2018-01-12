@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Concurrency
 {
-    public class Concurrency
+    public class ConcurrentTask
     {
         public static async Task WhenAll(List<Func<Task>> tasks, int maxConcurrency)
         {
