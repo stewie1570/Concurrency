@@ -3,9 +3,9 @@
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <title>Concurrency</title>
+    <authors>stewie1570</authors>
+    <owners>stewie1570</owners>
     <licenseUrl>https://github.com/stewie1570/Concurrency/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/stewie1570/Concurrency</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
