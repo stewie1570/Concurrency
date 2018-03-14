@@ -34,11 +34,11 @@ namespace Concurrency
                 .Select((taskProvider, index) => new IndexedTaskProvider<T> { TaskProvider = taskProvider, Index = index })
                 .GetEnumerator();
 
-            var results = await Task.WhenAll(Enumerable
+            var resultLists = await Task.WhenAll(Enumerable
                 .Range(start: 1, count: maxConcurrency)
                 .Select(i => RunInSeries(taskEnumerator)));
 
-            return results
+            return resultLists
                 .SelectMany(resultList => resultList)
                 .OrderBy(indexedResult => indexedResult.Index)
                 .Select(indexedResult => indexedResult.Result);
