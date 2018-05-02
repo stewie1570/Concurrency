@@ -60,6 +60,43 @@ namespace Concurrency.Tests
         }
 
         [TestMethod]
+        public async Task ShouldLimitConcurrencyToTaskCountWhenTaskCountIsLessThanMaxConcurrencyLimit()
+        {
+            //Arrange
+            var numTasksRunning = 0;
+            var taskCompletions = Enumerable
+                .Range(start: 1, count: 10)
+                .Select(i => new TaskCompletionSource<int>())
+                .ToList();
+            Func<int, Task<int>> resultFromTaskId = async taskId =>
+            {
+                numTasksRunning++;
+                var taskCount = numTasksRunning;
+                await taskCompletions[taskId - 1].Task;
+                numTasksRunning--;
+
+                return taskCount;
+            };
+
+            var tasks = new List<Func<Task<int>>>
+            {
+                async () => await resultFromTaskId(1),
+                async () => await resultFromTaskId(2),
+                async () => await resultFromTaskId(3),
+                async () => await resultFromTaskId(4),
+                async () => await resultFromTaskId(5),
+            };
+
+            //Act
+            var getTaskCounts = ConcurrentTask.WhenAll(tasks, maxConcurrency: 10);
+            taskCompletions.ForEach(taskCompletion => taskCompletion.SetResult(0));
+            var tasksInFlightCounts = await getTaskCounts;
+
+            //Assert
+            tasksInFlightCounts.Max().Should().Be(tasks.Count, because: $"there should be up to {tasks.Count} tasks in flight.");
+        }
+
+        [TestMethod]
         public async Task ShouldReturnTasksInOrderDespiteWhenTheyResolve()
         {
             //Arrange

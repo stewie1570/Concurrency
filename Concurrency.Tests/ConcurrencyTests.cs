@@ -51,6 +51,45 @@ namespace Concurrency.Tests
         }
 
         [TestMethod]
+        public async Task ShouldLimitMaxConcurrencyToTaskCount()
+        {
+            //Arrange
+            var logs = new List<Log>();
+            var numTasksRunning = 0;
+            var taskCompletions = Enumerable
+                .Range(start: 1, count: 10)
+                .Select(i => new TaskCompletionSource<int>())
+                .ToList();
+            Func<int, Task> addLog = async taskId =>
+            {
+                numTasksRunning++;
+                logs.Add(new Log { Id = taskId, NumTasksRunning = numTasksRunning });
+                await taskCompletions[taskId - 1].Task;
+                numTasksRunning--;
+            };
+
+            var tasks = new List<Func<Task>>
+            {
+                async () => await addLog(1),
+                async () => await addLog(2),
+                async () => await addLog(3),
+                async () => await addLog(4),
+                async () => await addLog(5)
+            };
+
+            //Act
+            var whenAllComplete = ConcurrentTask.WhenAll(tasks, maxConcurrency: 10);
+            taskCompletions.ForEach(taskCompletion => taskCompletion.SetResult(0));
+            await whenAllComplete;
+
+            //Assert
+            logs
+                .Max(log => log.NumTasksRunning)
+                .Should()
+                .Be(tasks.Count, because: $"there should be up to {tasks.Count} tasks in flight.");
+        }
+
+        [TestMethod]
         public async Task ShouldLimitConcurrency()
         {
             //Arrange
