@@ -1,6 +1,5 @@
 # Concurrency
 
-[![Build](http://stewiebuild.cloudapp.net:8080/app/rest/builds/buildType:Concurrency_Build/statusIcon.svg)](http://stewiebuild.cloudapp.net:8080/project.html?projectId=Concurrency&tab=projectOverview)
 [![NuGet version](https://badge.fury.io/nu/Concurrency.svg)](https://badge.fury.io/nu/Concurrency)
 
 Similar to Task.WhenAll but allows you to limit the number of tasks in flight (max concurrency).
