@@ -63,7 +63,11 @@ namespace Concurrency
 
             return enumerator.MoveNext()
                 ? await RunInSeries(enumerator, accumalatedValuesOrEmpty
-                    .Concat(new IndexedResult<T> { Index = enumerator.Current.Index, Result = await enumerator.Current.TaskProvider() })
+                    .Concat(new IndexedResult<T>
+                    {
+                        Index = enumerator.Current.Index,
+                        Result = await enumerator.Current.TaskProvider()
+                    })
                     .ToList())
                 : accumalatedValuesOrEmpty;
         }

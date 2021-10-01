@@ -1,6 +1,7 @@
 # Concurrency
 
 [![NuGet version](https://badge.fury.io/nu/Concurrency.svg)](https://badge.fury.io/nu/Concurrency)
+[![Build (PR)](https://github.com/stewie1570/Concurrency/actions/workflows/PR.yml/badge.svg)](https://github.com/stewie1570/Concurrency/actions/workflows/PR.yml)
 
 Similar to Task.WhenAll but allows you to limit the number of tasks in flight (max concurrency).
 

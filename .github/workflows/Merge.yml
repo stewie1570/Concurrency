@@ -1,0 +1,37 @@
+name: Build (Merge & Publish)
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Bump version and push tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v5.6
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Publish NuGet package
+      run: |  
+        cd Concurrency
+        dotnet pack -c Release -o out -p:PackageVersion=${{ steps.tag_version.outputs.new_version }}
+        cd out
+        dotnet nuget push Concurrency.${{ steps.tag_version.outputs.new_version }}.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        
