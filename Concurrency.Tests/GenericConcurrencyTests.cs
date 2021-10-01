@@ -1,13 +1,12 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Concurrency.Tests
 {
-    [TestClass]
     public class GenericConcurrencyTests
     {
         public class Log
@@ -16,7 +15,7 @@ namespace Concurrency.Tests
             public int NumTasksRunning { get; set; }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ShouldLimitConcurrency()
         {
             //Arrange
@@ -59,7 +58,7 @@ namespace Concurrency.Tests
             taskCounts.Max().Should().Be(maxConcurrency, because: $"there should be up to {maxConcurrency} tasks in flight.");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ShouldLimitConcurrencyToTaskCountWhenTaskCountIsLessThanMaxConcurrencyLimit()
         {
             //Arrange
@@ -96,7 +95,7 @@ namespace Concurrency.Tests
             tasksInFlightCounts.Max().Should().Be(tasks.Count, because: $"there should be up to {tasks.Count} tasks in flight.");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ShouldReturnTasksInOrderDespiteWhenTheyResolve()
         {
             //Arrange
@@ -130,7 +129,7 @@ namespace Concurrency.Tests
             var results = await getResults;
 
             //Assert
-            results.ShouldBeEquivalentTo(new int[]
+            results.Should().BeEquivalentTo(new int[]
             {
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
             }, ops => ops.WithStrictOrdering());

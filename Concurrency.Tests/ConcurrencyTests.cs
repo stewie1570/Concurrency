@@ -1,13 +1,12 @@
 ﻿using FluentAssertions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace Concurrency.Tests
 {
-    [TestClass]
     public class ConcurrencyTests
     {
         public class Log
@@ -16,7 +15,7 @@ namespace Concurrency.Tests
             public int NumTasksRunning { get; set; }
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ShouldRunAllTasks()
         {
             //Arrange
@@ -40,7 +39,7 @@ namespace Concurrency.Tests
             await ConcurrentTask.WhenAll(tasks, maxConcurrency: 5);
 
             //Assert
-            logs.ShouldBeEquivalentTo(new List<Log>
+            logs.Should().BeEquivalentTo(new List<Log>
             {
                 new Log { Id = 1 },
                 new Log { Id = 2 },
@@ -50,7 +49,7 @@ namespace Concurrency.Tests
             });
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ShouldLimitMaxConcurrencyToTaskCount()
         {
             //Arrange
@@ -69,13 +68,13 @@ namespace Concurrency.Tests
             };
 
             var tasks = new List<Func<Task>>
-            {
-                async () => await addLog(1),
-                async () => await addLog(2),
-                async () => await addLog(3),
-                async () => await addLog(4),
-                async () => await addLog(5)
-            };
+                {
+                    async () => await addLog(1),
+                    async () => await addLog(2),
+                    async () => await addLog(3),
+                    async () => await addLog(4),
+                    async () => await addLog(5)
+                };
 
             //Act
             var whenAllComplete = ConcurrentTask.WhenAll(tasks, maxConcurrency: 10);
@@ -89,7 +88,7 @@ namespace Concurrency.Tests
                 .Be(tasks.Count, because: $"there should be up to {tasks.Count} tasks in flight.");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ShouldLimitConcurrency()
         {
             //Arrange
@@ -108,18 +107,18 @@ namespace Concurrency.Tests
             };
 
             var tasks = new List<Func<Task>>
-            {
-                async () => await addLog(1),
-                async () => await addLog(4),
-                async () => await addLog(6),
-                async () => await addLog(3),
-                async () => await addLog(5),
-                async () => await addLog(7),
-                async () => await addLog(2),
-                async () => await addLog(9),
-                async () => await addLog(10),
-                async () => await addLog(8)
-            };
+                {
+                    async () => await addLog(1),
+                    async () => await addLog(4),
+                    async () => await addLog(6),
+                    async () => await addLog(3),
+                    async () => await addLog(5),
+                    async () => await addLog(7),
+                    async () => await addLog(2),
+                    async () => await addLog(9),
+                    async () => await addLog(10),
+                    async () => await addLog(8)
+                };
 
             //Act
             int maxConcurrency = 3;
@@ -134,7 +133,7 @@ namespace Concurrency.Tests
                 .Be(maxConcurrency, because: $"there should be up to {maxConcurrency} tasks in flight.");
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ShouldNotRepeatTasks()
         {
             //Arrange
@@ -153,18 +152,18 @@ namespace Concurrency.Tests
             };
 
             var tasks = new List<Func<Task>>
-            {
-                async () => await addLog(3),
-                async () => await addLog(2),
-                async () => await addLog(7),
-                async () => await addLog(4),
-                async () => await addLog(1),
-                async () => await addLog(5),
-                async () => await addLog(8),
-                async () => await addLog(9),
-                async () => await addLog(6),
-                async () => await addLog(10)
-            };
+                {
+                    async () => await addLog(3),
+                    async () => await addLog(2),
+                    async () => await addLog(7),
+                    async () => await addLog(4),
+                    async () => await addLog(1),
+                    async () => await addLog(5),
+                    async () => await addLog(8),
+                    async () => await addLog(9),
+                    async () => await addLog(6),
+                    async () => await addLog(10)
+                };
 
             //Act
             int maxConcurrency = 3;
