@@ -28,10 +28,10 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Publish NuGet package
       run: |  
-        cd Cache
+        cd Concurrency
         dotnet pack -c Release -o out -p:PackageVersion=${{ steps.tag_version.outputs.new_version }}
         cd out
-        dotnet nuget push AsyncCache.${{ steps.tag_version.outputs.new_version }}.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
+        dotnet nuget push Concurrency.${{ steps.tag_version.outputs.new_version }}.nupkg -k ${NUGET_API_KEY} -s https://api.nuget.org/v3/index.json
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         
