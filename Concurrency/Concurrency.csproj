@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <PackageId>Concurrency</PackageId>
     <Authors>Stewart Anderson</Authors>
     <Description>Similar to Task.WhenAll but allows you to limit the number of tasks in flight (max concurrency).</Description>

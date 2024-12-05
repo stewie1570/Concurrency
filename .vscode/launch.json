@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Concurrency.Tests/bin/Debug/net5.0/Concurrency.Tests.dll",
+            "program": "${workspaceFolder}/Concurrency.Tests/bin/Debug/net9.0/Concurrency.Tests.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Concurrency.Tests",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
